@@ -26,3 +26,12 @@ init2: new_venv2
 test:
 	# @python setup.py test
 	@python3 -m doctest -v rule_engine/rule.py
+
+dist:
+	@source venv/bin/activate; pip install --upgrade setuptools wheel
+	@source venv/bin/activate; python3 setup.py sdist bdist_wheel
+
+publish: dist
+	@source venv/bin/activate; pip install --upgrade twine
+	@source venv/bin/activate; twine upload dist/*
+
