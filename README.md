@@ -1,4 +1,4 @@
-# Rule Engine
+# Rule
 
 A rule engine written in python.
 
@@ -12,7 +12,7 @@ Or, you can just use the special `var` operator to indicate the context paramete
 ## Usage
 
 ```
->>> from rule_engine import Rule
+>>> from rule import Rule
 >>>
 >>> context = dict(a=1, world='hello')
 >>> Rule(['=', ['var', 'a'], 1]).match(context)
@@ -50,7 +50,7 @@ True
 ```
 
 
-See [rule_engine/op.py](rule_engine/op.py) for more supported operators.
+See [rule/op.py](rule/op.py) for more supported operators.
 
 ## License
 

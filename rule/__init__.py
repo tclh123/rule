@@ -3,7 +3,7 @@
 import six
 import yaml
 
-from rule_engine.op import get_op
+from rule.op import get_op
 
 __all__ = ['Rule', 'Expr']
 
@@ -39,7 +39,7 @@ class Expr(object):
 
 class Rule(object):
     """
-    >>> from rule_engine import Rule
+    >>> from rule import Rule
     >>>
     >>> context = dict(a=1, world='hello')
     >>> Rule(['=', ['var', 'a'], 1]).match(context)
@@ -90,8 +90,8 @@ class Rule(object):
 
     __repr__ = __str__
 
-    def match(self, context):
-        ret = self.expr.match(context)
+    def match(self, context=None):
+        ret = self.expr.match(context or {})
         return bool(ret) if self.return_bool else ret
 
 
