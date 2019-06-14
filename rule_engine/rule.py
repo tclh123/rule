@@ -5,6 +5,8 @@ import yaml
 
 from rule_engine.op import get_op
 
+__all__ = ['Rule', 'Expr']
+
 
 def is_simple_type(obj):
     return isinstance(obj, (six.integer_types, float, six.string_types, bool, type(None)))
@@ -36,6 +38,44 @@ class Expr(object):
 
 
 class Rule(object):
+    """
+    >>> from rule_engine import Rule
+    >>>
+    >>> context = dict(a=1, world='hello')
+    >>> Rule(['=', ['var', 'a'], 1]).match(context)
+    True
+    >>> Rule("['=', ['var', 'a'], 1]").match(context)
+    True
+    >>> Rule(['=', 'a', 1]).match(context)
+    True
+    >>> Rule(['=', 'hello', 'hello']).match(context)
+    True
+    >>> Rule(['=', 'world', 'hello']).match(context)
+    True
+    >>> Rule(['<', 'a', 10]).match(context)
+    True
+    >>> Rule(['=', ['>', 'a', 10], False]).match(context)
+    True
+    >>>
+    >>> context = dict(ldap_id='Harry', hosts='sa,sb,sc', reason='hehe', nologin=False,
+    ...                group='wheel,sysadmin,platform', package='dev-python/sa-tools',
+    ...                branch='release', cc='Tony,Mike',)
+    >>> Rule(['contains', 'hosts', 'sa,']).match(context)
+    True
+    >>> Rule(['contains', ['split', 'hosts', ','], 'sa']).match(context)
+    True
+    >>> Rule(['in', 'branch', 'master', 'release']).match(context)
+    True
+    >>> Rule(['=', 'ldap_id', 'Harry']).match(context)
+    True
+    >>> Rule(['match', 'package', 'dev-python/*']).match(context)
+    True
+    >>> Rule(['regex', 'package', 'dev-python/.*']).match(context)
+    True
+    >>> Rule(['is', 'nologin', False]).match(context)
+    True
+    """
+
     def __init__(self, rule, return_bool=False):
         if isinstance(rule, six.string_types):
             self.rule = yaml.safe_load(rule)
@@ -58,6 +98,7 @@ class Rule(object):
 if __name__ == '__main__':
     context = dict(a=1, world='hello')
     rules = [
+        Rule("['=', ['var', 'a'], 1]"),
         Rule(['=', ['var', 'a'], 1]),
         Rule(['=', 'a', 1]),
         Rule(['=', 'hello', 'hello']),

@@ -24,4 +24,5 @@ init2: new_venv2
 	$(MAKE) install2
 
 test:
-	@python setup.py test
+	# @python setup.py test
+	@python3 -m doctest -v rule_engine/rule.py
