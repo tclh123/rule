@@ -52,3 +52,7 @@ True
 
 See [rule_engine/op.py](rule_engine/op.py) for more supported operators.
 
+## License
+
+http://tclh123.mit-license.org/
+
